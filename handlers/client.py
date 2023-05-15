@@ -11,7 +11,7 @@ async def command_start(message : types.Message):
 
 # @dp.message_handler(commands='help')
 async def command_help(message : types.Message):
-    await bot.send_message(message.from_user.id, 'Создано для обучения в качестве проекта.\n Abdurakhmanov Anvar 2023')
+    await bot.send_message(message.from_user.id, 'Создано для обучения в качестве проекта.')
     await message.delete()
 
 # @dp.message_handler(commands='Режим_работы')
