@@ -23,5 +23,5 @@ async def sql_read2():
     return cur.execute('SELECT * FROM menu').fetchall()
 
 async def sql_delete_command(data):
-    cur.execute('DELETE * FROM menu WHERE name == ?', (data,))
+    cur.execute('DELETE FROM menu WHERE name == ?', (data,))
     base.commit()
