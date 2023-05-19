@@ -16,7 +16,7 @@ class FSMAdmin(StatesGroup):
 
 # Получаем ID текущего модератора
 # @dp.message_handler(commands=['moderator'], is_chat_admin=True)
-async def make_changes_command(message : types.Message):
+async def make_changes_command(message: types.Message):
     global ID
     ID = message.from_user.id
     await bot.send_message(message.from_user.id, 'Вы администратор.\nЧто хотите сделать?', reply_markup=admin_kb.button_case_admin)
@@ -24,7 +24,7 @@ async def make_changes_command(message : types.Message):
 
 #Начало диалога загрузки нового пункта меню
 #@dp.message_handler(commands='Загрузить', state=None)
-async def cm_start(message : types.Message):
+async def cm_start(message: types.Message):
     if message.from_user.id == ID:
         await FSMAdmin.photo.set()
         await message.reply('Загрузите фото')
@@ -84,16 +84,15 @@ async def del_callback_run(callback_query: types.CallbackQuery):
     await callback_query.answer(text=f'Пицца {callback_query.data.replace("del ", "")} удалена.', show_alert=True)
 
 # @dp.message_handler(commands='Удалить')
-async def delete_item(message : types.Message):
+async def delete_item(message: types.Message):
     if message.from_user.id == ID:
         read = await sqlite_db.sql_read2()
         for ret in read:
             await bot.send_photo(message.from_user.id, ret[0], f'{ret[1]}\nОписание: {ret[2]}\nЦена: {ret[-1]}')
-            await bot.send_message(message.from_user.id, text='^^^', reply_markup=InlineKeyboardMarkup.\
-                                   add(InlineKeyboardButton(f'Удалить {ret[1]}', callback_data=f'del {ret[1]}')))
+            await bot.send_message(message.from_user.id, text='^^^', reply_markup=InlineKeyboardMarkup().add(InlineKeyboardButton(f'Удалить {ret[1]}', callback_data=f'del {ret[1]}')))
 
 # Регистрируем хендлеры
-def register_handler_admin(dp : Dispatcher):
+def register_handler_admin(dp: Dispatcher):
     dp.register_message_handler(make_changes_command, commands=['moderator'], is_chat_admin=True)
     dp.register_message_handler(cm_start, commands=['Загрузить'], state=None)
     dp.register_message_handler(load_photo, content_types=['photo'], state=FSMAdmin.photo)
