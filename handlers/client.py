@@ -1,6 +1,8 @@
 from aiogram import types, Dispatcher
 from create_bot import dp, bot
 from keyboards import kb_client
+from data_base import sqlite_db
+
 # @dp.message_handler(commands='start')
 async def command_start(message : types.Message):
     try:
@@ -22,8 +24,12 @@ async def command_worktime(message : types.Message):
 async def command_adress(message : types.Message):
     await bot.send_message(message.from_user.id, 'Г. Казань, ул. Пушкина, д. 32')
 
+# @dp.message_handler(commands='Меню')
+async def command_pizza_menu(message : types.Message):
+    await  sqlite_db.sql_read(message)
 def register_hadlers_client(dp : Dispatcher):
     dp.register_message_handler(command_start, commands=['start'])
     dp.register_message_handler(command_help, commands=['help'])
     dp.register_message_handler(command_worktime, commands=['Режим_работы'])
     dp.register_message_handler(command_adress, commands=['Расположение'])
+    dp.register_message_handler(command_pizza_menu, commands=['Меню'])
